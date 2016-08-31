@@ -1,3 +1,111 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,700';
+
+$body-c: #f6f6f6;
+$border-c: #c4c4c4;
+$disabled: #dddddd;
+$green: #31a354;
+$ff: "Open Sans","Helvetica Neue", sans-serif;
+
+$browser-context: 16; // Default
+
+@function em($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}em;
+}
+
 body{
-  background: linear-gradient(red, yellow);
+  background-color: $body-c;
+}
+.text-center{
+  text-align: center;
+}
+.form-container{
+  max-width: 40em;
+  margin: 0 auto;
+  font-family: $ff;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+    label{
+      text-transform: uppercase;
+      font-weight: bold;
+      line-height: 10px;
+      font-size: em(14);
+      font-family: inherit;
+    }
+
+    input[type='text'], select{
+      background-color: #ffffff;
+      border: solid 1px $border-c;
+      width: 100%;
+      height: em(35);
+      margin-bottom: em(10);
+      padding: em(6) em(8);
+    }
+
+    select{
+      cursor: pointer;
+      -webkit-appearance: none;
+      background-image: url("/app/dist/images/arrow.png");
+      background-position: 99% center;
+      background-repeat: no-repeat;
+      background-size: 8px;
+
+      &:hover{
+        background-color: darken($body-c, 3);
+      }
+    }
+
+    .policy-wrapper{
+      margin-top: em(15);
+      font-size: em(15.3);
+    }
+  
+    .btn{
+      background-color: $green;
+      padding: em(11) em(26);
+      text-transform: uppercase;
+      color: #ffffff;
+      border: none;
+      border-radius: 3px;
+      margin-top: em(25);
+      font-size: em(17);
+      transition: all .4s;
+
+      &:hover{
+        background-color: lighten($green, 10);
+      }
+    }
+    .input-wrapper{
+      position: relative;
+      input{
+        padding-right: 20px;
+      }
+      .fa{
+        position: absolute;
+        padding: 10px;
+        right: 0;
+        top: -2px;
+        color: darken($body-c, 30);
+      }
+    }
+
+    .checkbox-wrapper{
+      margin-top: em(20);
+
+      label{
+        font-size: em(12);
+        cursor: pointer;
+        display: block;
+        padding-left: 15px;
+        text-indent: -15px;
+      }
+
+      input[type='checkbox']{
+        margin:0;
+        vertical-align: bottom;
+        position: relative;
+        top: 1px;
+        margin-right: em(20);
+      }
+    }
 }
