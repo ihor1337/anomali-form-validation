@@ -70,6 +70,7 @@ body{
       margin-top: em(25);
       font-size: em(17);
       transition: all .4s;
+      box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
 
       &:hover{
         background-color: lighten($green, 10);
