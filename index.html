@@ -10,81 +10,157 @@
     <link rel="stylesheet" href="/app/dist/css/style.min.css">
     <title>Form</title>
 </head>
-<body>
-<div class="container-fluid">
-    <div class="form-container">
-        <form>
+<body ng-app="anomaliForm">
+<div class="container-fluid" ng-cloak>
+    <div class="form-container" ng-controller="formController">
+        <form ng-submit="submitForm()" name="form">
+            {{reg}}
             <div class="row">
                 <div class="col-lg-6">
                     <label>First Name *</label>
                   <div class="input-wrapper">
-                      <input type="text">
+                      <input type="text" ng-model="reg.fName" name="fName" ng-required="true" ng-pattern="/^[a-zA-Z ]+$/">
                       <i class="fa fa-user" aria-hidden="true"></i>
+                      <div class="error text-center" ng-if="(form.fName.$error.required && !form.fName.$pristine
+                       && form.fName.$touched) || form.fName.$pristine && form.fName.$touched ">
+                          <span >This field is required. Only characters allowed [A-Z,a-z]</span>
+                      </div>
+                      <div class="error text-center" ng-if="form.fName.$error.pattern">
+                          <span >Incorrect input! Only characters allowed [A-Z,a-z]</span>
+                      </div>
                   </div>
                 </div>
                 <div class="col-lg-6">
                     <label>Last Name *</label>
-                    <input type="text">
+                    <input type="text" ng-model="reg.lName" name="lName" ng-required="true" ng-pattern="/^[a-zA-Z ]+$/">
+                    <div class="error text-center" ng-if="(form.lName.$error.required && !form.lName.$pristine
+                       && form.lName.$touched) || form.lName.$pristine && form.lName.$touched ">
+                        <span >This field is required. Only characters allowed [A-Z,a-z]</span>
+                    </div>
+                    <div class="error text-center" ng-if="form.lName.$error.pattern">
+                        <span >Incorrect input! Only characters allowed [A-Z,a-z]</span>
+                    </div>
                 </div>
                 <div class="col-lg-12">
                     <label>Company Name *</label>
-                    <input type="text">
+                    <input type="text" ng-model="reg.cName" name="cName" ng-required="true" ng-pattern="/^[a-zA-Z0-9 _.-]*$/">
+                    <div class="error text-center" ng-if="(form.cName.$error.required && !form.cName.$pristine
+                       && form.cName.$touched) || form.cName.$pristine && form.cName.$touched ">
+                        <span >This field is required. Allowed characters (A-Z, a-z, 0-9, _, -, .) and spaces</span>
+                    </div>
+                    <div class="error text-center" ng-if="form.cName.$error.pattern">
+                        <span >Incorrect input! Allowed characters (A-Z, a-z, 0-9, _, -, .) and spaces</span>
+                    </div>
                 </div>
                 <div class="col-lg-12">
                     <label>Work Email *</label>
-                    <input type="text">
+                    <input type="email" validate-email ng-model="reg.email" name="email" ng-required="true">
+                    <div class="error text-center" ng-if="(form.email.$error.required && !form.email.$pristine
+                       && form.email.$touched) || form.email.$pristine && form.email.$touched ">
+                        <span >This field is required</span>
+                    </div>
+                    <div class="error text-center" ng-if="form.email.$dirty && form.email.$invalid">
+                        <span >Invalid email! Please, enter a valid email</span>
+                    </div>
                 </div>
                 <div class="col-lg-12">
                     <label>Phone Number *</label>
-                    <input type="text">
-                </div>
-                <div class="col-lg-6">
-                    <label>Country *</label>
-                    <select>
-                        <option>- Please Select -</option>
-                        <option>United States</option>
-                        <option>United Kingdom</option>
-                        <option>Japan</option>
-                    </select>
-                </div>
-                <div class="col-lg-6">
-                    <label>State *</label>
-                    <select>
-                        <option>- Please Select (US only) -</option>
-                        <option>United States</option>
-                        <option>United Kingdom</option>
-                        <option>Japan</option>
-                    </select>
-                </div>
-                <div class="col-lg-6">
-                    <label>Industry *</label>
-                    <select>
-                        <option>- Please Select (US only) -</option>
-                        <option>United States</option>
-                        <option>United Kingdom</option>
-                        <option>Japan</option>
-                    </select>
-                </div>
-                <div class="col-lg-6">
-                    <label>ZIP/Postal *</label>
-                    <input type="text">
-                </div>
-                <div class="col-lg-6">
-                    <label>Password *</label>
-                    <div class="input-wrapper">
-                        <input type="text">
-                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                    <input type="text" ng-model="reg.phone" name="phone" ng-pattern="/^([a-zA-Z,#/ \.\(\)\-\+\*]*[0-9]){7}[0-9a-zA-Z,#/ \.\(\)\-\+\*]*$/"
+                    ng-required="true">
+                    <div class="error text-center" ng-if="(form.phone.$error.required && !form.phone.$pristine
+                       && form.phone.$touched) || form.phone.$pristine && form.phone.$touched ">
+                        <span >This field is required</span>
                     </div>
+                    <div class="error text-center" ng-if="form.phone.$dirty && form.phone.$error.pattern">
+                        <span >Invalid phone! Please, try one of the following formats: 1234567 | (123)4567890 | (123)-456-7890 |(555) 987-6543 ext 210 | 999-666-7777-x1967</span>
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Country *</label>
+                        <select ng-model="reg.country" name="country" ng-required="true">
+                            <option value="">- Please Select -</option>
+                            <option value="US">United States</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="JP">Japan</option>
+                        </select>
+                        <div class="error text-center" ng-if="(form.country.$error.required && !form.country.$pristine
+                       && form.country.$touched) || form.country.$pristine && form.country.$touched ">
+                            <span >This field is required</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>State *</label>
+                        <select ng-disabled="reg.country != 'US'" ng-model="reg.state" name="state" ng-required="reg.country == 'US'">
+                            <option value="" ng-selected="reg.country != 'US'">- Please Select (US only) -</option>
+                            <option value="CA">California</option>
+                            <option value="FL">Florida</option>
+                            <option value="NY">New York</option>
+                        </select>
+                        <div class="error text-center" ng-if="(form.state.$error.required && !form.state.$pristine
+                       && form.state.$touched) || form.state.$pristine && form.state.$touched ">
+                            <span >This field is required</span>
+                        </div>
+                    </div>
+                </div>
+               <div class="row">
+                   <div class="col-lg-6">
+                       <label>Industry *</label>
+                       <select ng-required="true" ng-model="reg.industry" name="industry">
+                           <option value="">- Please Select -</option>
+                           <option value="MC">Medicine</option>
+                           <option value="HC">Healthcare</option>
+                           <option value="SE">Software Engineering</option>
+                       </select>
+                       <div class="error text-center" ng-if="(form.industry.$error.required && !form.industry.$pristine
+                       && form.industry.$touched) || form.industry.$pristine && form.industry.$touched ">
+                           <span >This field is required</span>
+                       </div>
+                   </div>
+                   <div class="col-lg-6">
+                       <label>ZIP/Postal *</label>
+                       <input type="text" ng-required="true" ng-model="reg.zip" name="zip">
+                       <div class="error text-center" ng-if="(form.zip.$error.required && !form.zip.$pristine
+                       && form.zip.$touched) || form.zip.$pristine && form.zip.$touched ">
+                           <span >This field is required</span>
+                       </div>
+                   </div>
+               </div>
+               <div class="row">
+                   <div class="col-lg-6">
+                       <label>Password *</label>
+                       <div class="input-wrapper">
+                           <input type="password" ng-model="reg.pass" name="pass" validate-password password-to-compare="reg.passConfirm"
+                           ng-required="true">
+                           <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                           <div class="error text-center" ng-if="form.pass.$error.passwordValid">
+                               <span>Invalid password. It should contain 1 uppercase, 1 lowercase, 1 special
+                                   character and at least 8 characters</span>
+                           </div>
+                           <div class="error text-center" ng-if="!form.pass.$error.passwordValid && form.pass.$error.passwordMatch">
+                               <span>Passwords mismatch</span>
+                           </div>
+                           <div class="error text-center" ng-if="(form.pass.$error.required && !form.pass.$pristine
+                       && form.pass.$touched) || form.pass.$pristine && form.pass.$touched ">
+                               <span >This field is required</span>
+                           </div>
+                       </div>
 
-                </div>
-                <div class="col-lg-6">
-                    <label>Confirm password *</label>
-                    <div class="input-wrapper">
-                        <input type="text">
-                        <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
+                   </div>
+                   <div class="col-lg-6">
+                       <label>Confirm password *</label>
+                       <div class="input-wrapper">
+                           <input type="password" ng-model="reg.passConfirm" name="passConfirm" ng-required="true"
+                           ng-class="{'invalid': form.pass.$error.passwordMatch && !form.passConfirm.$pristine}">
+                           <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                           <div class="error text-center" ng-if="(form.passConfirm.$error.required && !form.passConfirm.$pristine
+                       && form.passConfirm.$touched) || form.passConfirm.$pristine && form.passConfirm.$touched ">
+                               <span >This field is required</span>
+                           </div>
+                       </div>
+                   </div>
+               </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="checkbox-wrapper">
@@ -101,7 +177,7 @@
                       <span class="policy">
                         By clicking Register, you agree to Anomali's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
                       </span><br>
-                      <button class="btn">
+                      <button class="btn" type="submit" ng-disabled="form.$invalid && form.$dirty">
                           Register
                       </button>
                   </div>
@@ -111,4 +187,6 @@
     </div>
 </div>
 </body>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="app/dist/js/app.min.js"></script>
 </html>

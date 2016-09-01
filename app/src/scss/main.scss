@@ -4,6 +4,8 @@ $body-c: #f6f6f6;
 $border-c: #c4c4c4;
 $disabled: #dddddd;
 $green: #31a354;
+$invalid: #ff3232;
+$valid: #47d147;
 $ff: "Open Sans","Helvetica Neue", sans-serif;
 
 $browser-context: 16; // Default
@@ -18,6 +20,7 @@ body{
 .text-center{
   text-align: center;
 }
+
 .form-container{
   max-width: 40em;
   margin: 0 auto;
@@ -32,19 +35,59 @@ body{
       font-size: em(14);
       font-family: inherit;
     }
+    .valid{
+      border: 1px solid $valid !important;
+    }
 
-    input[type='text'], select{
+    .invalid{
+      border: 1px solid $invalid !important;
+    }
+    .error{
+      font-weight: 200;
+      font-style: italic;
+      color: $invalid;
+      font-size: em(15);
+    }
+    input[type='text'], input[type='email'], input[type='password'], select{
       background-color: #ffffff;
       border: solid 1px $border-c;
       width: 100%;
       height: em(35);
       margin-bottom: em(10);
       padding: em(6) em(8);
+      transition: all .2s ease-in-out;
+
+      &:focus{
+        outline: none !important;
+        border: solid 1px darken($border-c, 20);
+        box-shadow: 0 0 8px 1px rgba(0,0,0, .2);
+
+        &.ng-dirty.ng-valid{
+          border: 1px solid $valid;
+        }
+
+        &.ng-invalid-pattern{
+          border: 1px solid $invalid;
+        }
+      }
+
+      &.ng-touched.ng-invalid, &.ng-dirty.ng-invalid{
+        border: 1px solid $invalid;
+      }
+
+      &::-ms-expand{
+        display: none;
+      }
+
+      &:-moz-ui-invalid{
+        box-shadow: none;
+      }
     }
 
     select{
       cursor: pointer;
       -webkit-appearance: none;
+      -moz-appearance: none;
       background-image: url("/app/dist/images/arrow.png");
       background-position: 99% center;
       background-repeat: no-repeat;
@@ -52,6 +95,10 @@ body{
 
       &:hover{
         background-color: darken($body-c, 3);
+      }
+      &:disabled{
+        background-color: darken($body-c, 4);
+        cursor: not-allowed;
       }
     }
 
@@ -69,12 +116,21 @@ body{
       border-radius: 3px;
       margin-top: em(25);
       font-size: em(17);
-      transition: all .4s;
+      transition: all .2s ease-in-out;
       box-shadow: 0 3px 8px 0 rgba(0,0,0,.3);
+
+      &:disabled{
+        opacity: .5;
+        &:hover{
+          background-color: $green;
+        }
+      }
 
       &:hover{
         background-color: lighten($green, 10);
       }
+
+
     }
     .input-wrapper{
       position: relative;

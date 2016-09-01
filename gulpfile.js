@@ -1,6 +1,3 @@
-/**
- * Created by Ihor on 8/30/2016.
- */
 "use strict";
 var gulp = require('gulp'),
     connect = require('gulp-connect'),
@@ -8,7 +5,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     autoprefixer = require('gulp-autoprefixer'),
     uglifyCSS = require('gulp-uglifycss'),
-    rename = require('gulp-rename');
+    rename = require('gulp-rename'),
+    concat = require('gulp-concat');
 
 gulp.task('connect', function() {
     connect.server({
@@ -16,6 +14,14 @@ gulp.task('connect', function() {
         port: 8000,
         livereload: true
     });
+});
+
+gulp.task('server', function(){
+   connect.server({
+       root:'',
+       port: 8000,
+       livereload: false
+   });
 });
 
 gulp.task('compile-bootstrap', function () {
@@ -38,7 +44,8 @@ gulp.task('css', function () {
 });
 
 gulp.task('js', function () {
-    return gulp.src('app/src/js/*.js')
+    return gulp.src(['./app/src/js/modules.js', './app/src/js/controllers/*.js','./app/src/js/directives/*.js'])
+        .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(rename('app.min.js'))
         .pipe(gulp.dest('app/dist/js'))
@@ -52,8 +59,8 @@ gulp.task('html', function () {
 
 gulp.task('watch', function () {
     gulp.watch('index.html',['html']);
-    gulp.watch('app/src/js/*.js', ['js']);
+    gulp.watch('app/src/js/**/*.js', ['js']);
     gulp.watch('app/src/scss/main.scss', ['css']);
 });
 
-gulp.task('default', ['connect', 'watch']);
+gulp.task('default', ['connect', 'js', 'css', 'watch']);
